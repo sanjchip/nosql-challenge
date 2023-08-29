@@ -107,6 +107,20 @@ Which establishments in London have a RatingValue greater than or equal to 4?
 
 What are the top 5 establishments with a RatingValue of 5, sorted by lowest hygiene score, nearest to the new restaurant added, "Penang Flavours"?
 
+    degree_search = 0.01
+    latitude = 51.49014200
+    longitude = 0.08384000
+
+    query_top5 = {"RatingValue": 5, "geocode.latitude":{"$lte": (latitude + degree_search), "$gte": (latitude - degree_search)},
+                                 "geocode.longitude":{"$lte": (longitude + degree_search), "$gte": (longitude - degree_search)}
+             }
+    sort =  [("scores.Hygiene", 1)]
+
+    results = establishments.find(query_top5).sort(sort)
+
+    for result in results.limit(5):
+    pprint (result)
+
 ![Alt text](image.png)
 
 How many establishments in each Local Authority area have a hygiene score of 0? Sort the results from highest to lowest, and print out the top ten local authority areas
